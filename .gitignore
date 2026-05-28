@@ -1,0 +1,10 @@
+# Ignorar extensiones
+*.pages
+*.rar
+*.zip
+
+# Ignorar datos sensibles
+.env
+
+# Ignorar dependencias
+node_modules/
