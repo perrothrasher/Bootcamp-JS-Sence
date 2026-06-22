@@ -1,0 +1,23 @@
+body { 
+    font-family: Arial, sans-serif; 
+    padding: 20px; 
+    max-width: 800px; 
+}
+
+.caja-ejercicio { 
+    margin-bottom: 30px;
+    padding: 15px; 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+}
+
+input, button { 
+    margin: 5px 5px 5px 0; 
+    padding: 8px; 
+}
+
+.resultado { 
+    font-weight: bold; 
+    color: #333; 
+    margin-top: 10px; 
+}
