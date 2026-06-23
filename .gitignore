@@ -8,3 +8,6 @@
 
 # Ignorar dependencias
 node_modules/
+
+# Ignorar carpetas
+Actividades/
