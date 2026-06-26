@@ -1,0 +1,19 @@
+Consulta 3 explicación: 
+Se usa una consulta para encontrar la edad máxima en la tabla cliente
+y luego se filtran las cuentas que pertenezcan a las personas que tengan esa edad
+
+Consulta 4 explicación:
+Se usa una consulta con IN para aislar primero a los clientes que tienen deudas 
+y luego se calcula el promedio de sus edades
+
+Consulta 5 explicación:
+Se agrupa por cliente y se usa HAVING COUNT para filtrar y mostrar solo a quienes 
+tengan más de 1 cuenta
+
+Consulta 6 explicación:
+Similar a la anterior pero se añade la función SUM(saldo) para juntar todo el dinero 
+total que posee cada cliente
+
+Consulta 7 explicación:
+Se filtra utilizando WHERE para considerar solo a los clientes que tengan saldo negativo y 
+despues se calcula la suma total combinada de todo el patrimonio bancario de cada cliente
