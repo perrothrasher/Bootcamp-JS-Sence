@@ -1,11 +1,11 @@
 {
-  "name": "Clase 1 03-07",
+  "name": "Actividad",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node --watch app.js"
   },
   "keywords": [],
   "author": "",
@@ -13,9 +13,13 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11.9.0",
+      "version": "^11.10.0",
       "onFail": "download"
     }
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "dayjs": "^1.11.21"
+  }
 }
