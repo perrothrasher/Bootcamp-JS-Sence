@@ -1,0 +1,13 @@
+###
+POST http://localhost:3000/tareas
+Content-Type: application/json
+
+{
+    "titulo": "Practicar express"
+}
+
+###
+PUT http://localhost:3000/tareas/1
+
+###
+GET http://localhost:3000/eliminar-tarea/1

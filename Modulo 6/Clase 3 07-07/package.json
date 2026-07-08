@@ -2,10 +2,10 @@
   "name": "Clase 3 07-07",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch index.js"
+    "start": "node --watch app.js"
   },
   "keywords": [],
   "author": "",
@@ -20,5 +20,9 @@
   "type": "module",
   "devDependencies": {
     "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "moment": "^2.30.1"
   }
 }
