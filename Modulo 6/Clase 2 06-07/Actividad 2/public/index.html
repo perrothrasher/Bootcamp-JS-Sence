@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Productos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Gestión de Productos</h1>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="acciones">
+        <button id="btnListar">Lista de Articulos</button>
+
+        <div class="orden">
+          <label for="ordenarPor">Ordenar por:</label>
+          <select id="ordenarPor">
+            <option value="nombre">Nombre</option>
+            <option value="precio">Precio</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="imagen-ilustrativa">
+        <img src="producto.jpg" alt="Producto ilustrativo" id="imgProducto">
+      </div>
+
+      <table id="tablaProductos">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Agregar Producto nuevo</h2>
+      <form id="formProducto">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="precio">Precio</label>
+        <input type="number" id="precio" name="precio" min="0" required>
+
+        <button type="submit">Agregar</button>
+      </form>
+      <p id="mensaje"></p>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

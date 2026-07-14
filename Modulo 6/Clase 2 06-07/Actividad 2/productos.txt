@@ -1,0 +1,8 @@
+Zapatillas, 25990
+Jeans, 12990
+Polera, 8990
+Chaqueta, 34990
+Poleron, 12990
+Poleron, 12990
+Polerón, 12345
+Hola, 8888
