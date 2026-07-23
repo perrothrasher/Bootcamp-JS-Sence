@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Finanzas Personales</title>
+    <style>
+    body { 
+        font-family: Arial, sans-serif; 
+        margin: 40px; 
+        background: #f4f6f8; 
+    }
+    h1 { 
+        color: #2c3e50; 
+    }
+    table { 
+        border-collapse: collapse; 
+        width: 100%; 
+        background: white; 
+    }
+    th, td { 
+        border: 1px solid #ddd; 
+        padding: 8px 12px; 
+        text-align: left; 
+    }
+    th { 
+        background: #2c3e50; 
+        color: white; 
+    }
+    tr:nth-child(even) { 
+        background: #f9f9f9; 
+    }
+    .ingreso { 
+        color: #27ae60; 
+        font-weight: bold; 
+    }
+    .gasto { 
+        color: #c0392b; 
+        font-weight: bold; 
+    }
+    #error-box {
+        display: none; 
+        background: #fdecea; 
+        color: #611a15;
+        border: 1px solid #f5c6cb; 
+        padding: 12px; 
+        border-radius: 6px; 
+        margin-bottom: 16px;
+    }
+    </style>
+</head>
+
+<body>
+  <h1>Finanzas Personales</h1>
+  <div id="error-box"></div>
+  <table id="tabla-finanzas">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Concepto</th>
+        <th>Tipo</th>
+        <th>Monto</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+<script>
+  async function cargarFinanzas() {
+    const errorBox = document.getElementById('error-box');
+    const tbody = document.querySelector('#tabla-finanzas tbody');
+
+    try {
+      const resp = await fetch('/finanzas');
+
+      if (!resp.ok) {
+        throw new Error(`Error: ${resp.status}`);
+      }
+
+      const json = await resp.json();
+
+      if (!json.ok) {
+        throw new Error(json.error || 'Error desconocido');
+      }
+
+      tbody.innerHTML = json.data.map(row => `
+        <tr>
+          <td>${row.id}</td>
+          <td>${row.concepto}</td>
+          <td class="${row.tipo}">${row.tipo}</td>
+          <td>$${Number(row.monto).toLocaleString('es-CL')}</td>
+          <td>${new Date(row.fecha).toLocaleDateString('es-CL')}</td>
+        </tr>
+      `).join('');
+
+    } catch (err) {
+      errorBox.style.display = 'block';
+      errorBox.textContent = `No se pudo cargar la información: ${err.message}`;
+      console.error(err);
+    }
+  }
+
+  cargarFinanzas();
+</script>
+</body>
+</html>
