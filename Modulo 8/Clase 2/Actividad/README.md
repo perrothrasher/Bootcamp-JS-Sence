@@ -21,27 +21,28 @@ Biblioteca Comunitaria "El Saber", persistiendo los datos en un archivo
 
 ```bash
 npm install
+pnpm install
 ```
 
 ## Ejecución
 
 ```bash
-# Modo desarrollo (recarga automática con --watch)
 npm run dev
+pnpm run dev
 
 # Modo producción
 npm start
+pnpm start
 ```
 
-Por defecto el servidor corre en `http://localhost:3001`. Se puede indicar
-otro puerto con la opción `--port` (o `-p`):
+Por defecto el servidor corre en `http://localhost:3001`.
 
 ```bash
 node index.js --port 3000
 ```
 
-Una vez levantado, el frontend queda disponible en `http://localhost:3001`
-(o el puerto que hayas usado) y la API en `http://localhost:3001/libros`.
+El frontend queda disponible en `http://localhost:3001` y la API 
+en `http://localhost:3001/libros`.
 
 ## Endpoints
 

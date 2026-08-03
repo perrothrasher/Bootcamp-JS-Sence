@@ -10,5 +10,11 @@
     "titulo": "1984",
     "autor": "George Orwell",
     "anio": 1949
+  },
+  {
+    "id": 3,
+    "titulo": "El Principito",
+    "autor": "Antoine de Saint-Exupéry",
+    "anio": 1943
   }
 ]

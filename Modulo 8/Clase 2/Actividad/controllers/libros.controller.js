@@ -5,7 +5,6 @@ import {
   eliminarLibroPorId,
 } from "../services/libros.service.js";
 
-// Año mínimo aceptado: antes de la imprenta no tiene sentido registrar libros :)
 const ANIO_MINIMO = 1450;
 const ANIO_MAXIMO = new Date().getFullYear();
 

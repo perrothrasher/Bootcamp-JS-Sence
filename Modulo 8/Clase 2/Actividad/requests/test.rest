@@ -36,7 +36,7 @@ Content-Type: application/json
 }
 
 ### Actualizar libro inexistente
-PUT {{baseUrl}}/libros/999
+PUT {{baseUrl}}/libros/9991
 Content-Type: application/json
 
 {
