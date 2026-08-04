@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Subir imagen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+  <div class="container py-5" style="max-width: 720px;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Subir imagen</h1>
+      <a href="index.html" class="btn btn-sm btn-outline-secondary">Volver</a>
+    </div>
+
+    <form id="formUpload" action="/upload" method="POST" enctype="multipart/form-data" class="border rounded p-4 bg-white">
+      <div class="mb-3">
+        <label for="inputFoto" class="form-label">Seleccione una imagen (JPG, JPEG, PNG, GIF) de un máximo de 5MB</label>
+        <input type="file" class="form-control" id="inputFoto" name="foto" accept="image/*" required>
+      </div>
+
+      <!-- Esta es la vista previa -->
+      <div id="contenedorPreview" class="mb-3" style="display:none;">
+        <p class="mb-2 text-muted">Vista previa:</p>
+        <img id="preview" src="" alt="Vista previa de la imagen seleccionada"
+             class="img-thumbnail" style="max-height: 220px;">
+      </div>
+
+      <button class="btn btn-primary" type="submit">Subir</button>
+      <a href="galeria.html" class="btn btn-link">Ver galería</a>
+    </form>
+
+    <div id="feedback" class="mt-4" style="display:none;"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('formUpload');
+    const feedback = document.getElementById('feedback');
+
+    const inputFoto = document.getElementById('inputFoto');
+    const contenedorPreview = document.getElementById('contenedorPreview');
+    const preview = document.getElementById('preview');
+    
+    // Vista previa local, sin aun haber subido el archivo
+    inputFoto.addEventListener('change', () => {
+      const archivo = inputFoto.files[0];
+      if (!archivo) {
+        contenedorPreview.style.display = 'none';
+        return;
+      }
+      const url = URL.createObjectURL(archivo);
+      preview.src = url;
+      contenedorPreview.style.display = 'block';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+
+      feedback.style.display = 'none';
+
+      try {
+        const res = await fetch('/upload', { method: 'POST', body: data });
+        const json = await res.json();
+
+        feedback.style.display = 'block';
+        feedback.className = 'alert ' + (json.ok ? 'alert-success' : 'alert-danger');
+        feedback.textContent = `[${res.status}] ` + (json.mensaje || (json.ok ? 'Imagen subida' : 'Error al subir'));
+
+        if (json.ok) {
+          form.reset();
+          contenedorPreview.style.display = 'none';
+        }
+      } catch (err) {
+        feedback.style.display = 'block';
+        feedback.className = 'alert alert-danger';
+        feedback.textContent = 'Error de red al intentar subir la imagen';
+      }
+    });
+  </script>
+</body>
+
+</html>

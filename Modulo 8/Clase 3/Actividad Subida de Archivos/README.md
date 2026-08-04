@@ -3,10 +3,10 @@
 ## Estructura
 
 ```
-mi-app-subida/
+Actividad-Subide-de-Archivos/
 ├─ uploads/            # imágenes subidas (se crea sola si no existe)
 ├─ public/
-│  ├─ index.html        # portada con descripción y botón "Ir a subir"
+│  ├─ index.html        # portada con descripción y botón para subir las imágenes
 │  ├─ upload.html        # formulario de subida + vista previa
 │  └─ gallery.html       # galería con todas las imágenes subidas
 ├─ server.js
@@ -17,15 +17,18 @@ mi-app-subida/
 ## Instalación
 
 ```bash
+pnpm install
 npm install
 ```
 
 ## Ejecución
 
 ```bash
-npm run dev     # con nodemon, recarga automática
-# o
-npm start        # sin recarga automática
+pnpm run dev
+npm run dev
+
+pnpm start
+npm start 
 ```
 
 Luego abrir `http://localhost:3000` en el navegador.
@@ -33,11 +36,10 @@ Luego abrir `http://localhost:3000` en el navegador.
 ## Flujo de la app
 
 1. **index.html** — portada con la descripción de la actividad y un botón
-   "Ir a subir".
+    para subir las imágenes
 2. **upload.html** — formulario para seleccionar una imagen. Al elegir el
-   archivo se muestra una vista previa local (antes de subirla) usando
-   `URL.createObjectURL`. Al enviar, se hace un `fetch` a `POST /upload` y
-   se muestra un mensaje de éxito o error.
+   archivo se muestra una vista previa local (antes de subirla). 
+   Al enviar, se muestra un mensaje de éxito o error.
 3. **gallery.html** — al cargar, consulta `GET /api/imagenes` y renderiza
    todas las imágenes guardadas en `uploads/` como tarjetas de Bootstrap.
 
@@ -48,7 +50,7 @@ Luego abrir `http://localhost:3000` en el navegador.
   - `400` si no se envió imagen o si excede 5MB.
   - `415` si el tipo de archivo no está permitido.
 - `GET /api/imagenes` — devuelve la lista de imágenes en `uploads/` en
-  formato JSON, usada por `gallery.html`.
+  formato JSON, usada por `galeria.html`.
 
 ## Validaciones
 
