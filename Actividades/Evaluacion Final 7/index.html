@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Países</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        input,
+        select,
+        button {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Administración de Países</h2>
+
+    <div id="errorBox" class="error"></div>
+    <div id="successBox" class="success"></div>
+
+    <div class="box">
+        <h3>Lista de Países</h3>
+        <label for="limitSelect">Cantidad de registros:</label>
+        <select id="limitSelect">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+        </select>
+        <button onclick="obtenerPaises(true)">Iniciar / Reiniciar Lista</button>
+        <button onclick="obtenerPaises(false)">Siguiente >></button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Continente</th>
+                    <th>Población</th>
+                    <th>PIB 2019</th>
+                    <th>PIB 2020</th>
+                </tr>
+            </thead>
+            <tbody id="tablaPaises"></tbody>
+        </table>
+    </div>
+
+    <div class="box">
+        <h3>Agregar País</h3>
+        <form id="formAgregar">
+            <div class="form-group"><input type="text" id="nombre" placeholder="Nombre" required></div>
+            <div class="form-group"><input type="text" id="continente" placeholder="Continente" required></div>
+            <div class="form-group"><input type="number" id="poblacion" placeholder="Población" required></div>
+            <div class="form-group"><input type="number" id="pib_2019" placeholder="PIB 2019" required></div>
+            <div class="form-group"><input type="number" id="pib_2020" placeholder="PIB 2020" required></div>
+            <button type="submit">Agregar País</button>
+        </form>
+    </div>
+
+    <div class="box">
+        <h3>Eliminar País</h3>
+        <form id="formEliminar">
+            <div class="form-group"><input type="text" id="nombreDel" placeholder="Nombre del país a eliminar" required>
+            </div>
+            <button type="submit">Eliminar País</button>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/paises';
+
+        function mostrarMensaje(texto, esError = false) {
+            const errorBox = document.getElementById('errorBox');
+            const successBox = document.getElementById('successBox');
+
+            errorBox.style.display = 'none';
+            successBox.style.display = 'none';
+
+            if (esError) {
+                errorBox.textContent = `${texto}`;
+                errorBox.style.display = 'block';
+            } else {
+                successBox.textContent = `${texto}`;
+                successBox.style.display = 'block';
+            }
+        }
+
+        async function obtenerPaises(reset = false) {
+            const limit = document.getElementById('limitSelect').value;
+            try {
+                const response = await fetch(`${API_URL}?limit=${limit}&reset=${reset}`);
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error);
+
+                if (reset) document.getElementById('tablaPaises').innerHTML = '';
+
+                if (data.length === 0 && !reset) {
+                    mostrarMensaje("No hay más registros para mostrar.", false);
+                    return;
+                }
+
+                const tbody = document.getElementById('tablaPaises');
+                data.forEach(pais => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${pais.nombre}</td>
+                        <td>${pais.continente}</td>
+                        <td>${pais.poblacion}</td>
+                        <td>${pais.pib_2019}</td>
+                        <td>${pais.pib_2020}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                mostrarMensaje(error.message, true);
+            }
+        }
+
+        document.getElementById('formAgregar').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const bodyData = {
+                nombre: document.getElementById('nombre').value,
+                continente: document.getElementById('continente').value,
+                poblacion: document.getElementById('poblacion').value,
+                pib_2019: document.getElementById('pib_2019').value,
+                pib_2020: document.getElementById('pib_2020').value
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bodyData)
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error);
+
+                mostrarMensaje(data.message, false);
+                document.getElementById('formAgregar').reset();
+            } catch (error) {
+                mostrarMensaje(error.message, true);
+            }
+        });
+
+        document.getElementById('formEliminar').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('nombreDel').value;
+
+            try {
+                const response = await fetch(`${API_URL}/${nombre}`, { method: 'DELETE' });
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error);
+
+                mostrarMensaje(data.message, false);
+                document.getElementById('formEliminar').reset();
+            } catch (error) {
+                mostrarMensaje(error.message, true);
+            }
+        });
+    </script>
+</body>
+
+</html>

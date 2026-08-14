@@ -1,0 +1,31 @@
+### 1. Registrar un usuario (POST)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "prueba@correo.com",
+  "password": "123456"
+}
+
+###
+
+### 2. Iniciar sesión y obtener Token (POST)
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@correo.com",
+  "password": "123456"
+}
+
+###
+
+### 3. Consultar ruta protegida (GET)
+GET http://localhost:3000/api/perfil
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcnVlYmFAY29ycmVvLmNvbSIsImVtYWlsIjoicHJ1ZWJhQGNvcnJlby5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4NjcyMzA1MiwiZXhwIjoxNzg2NzIzOTUyfQ.u4_Ql7V1beApaXJZnMWHfxBMBJ_5ZfH54-coaD6LFcw
+
+###
+
+### 4. Prueba de error (GET sin token válido)
+GET http://localhost:3000/api/perfil
+Authorization: Bearer 123
