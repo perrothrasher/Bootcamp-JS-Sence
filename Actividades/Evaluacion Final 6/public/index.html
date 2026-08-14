@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Civil de Mascotas</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        input,
+        button {
+            margin: 5px 0;
+            padding: 8px;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #004494;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .error-msg {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .success-msg {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Registro Civil de Mascotas</h1>
+    <div id="notificacion"></div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Registrar Mascota</h3>
+            <input type="text" id="post-nombre" placeholder="Nombre de la mascota">
+            <input type="text" id="post-rut" placeholder="RUT del dueño (Ej: 11222333-4)">
+            <button onclick="registrarMascota()">Registrar (POST)</button>
+        </div>
+
+        <div class="card">
+            <h3>Consultar Mascotas</h3>
+            <button onclick="obtenerMascotas()">Obtener Todas (GET)</button>
+            <hr>
+            <input type="text" id="get-nombre" placeholder="Nombre de mascota a buscar">
+            <button onclick="obtenerMascotas({ nombre: document.getElementById('get-nombre').value })">Buscar por
+                Nombre</button>
+            <hr>
+            <input type="text" id="get-rut" placeholder="RUT a buscar">
+            <button onclick="obtenerMascotas({ rut: document.getElementById('get-rut').value })">Buscar por RUT</button>
+        </div>
+
+        <div class="card">
+            <h3>Eliminar Mascotas</h3>
+            <input type="text" id="del-nombre" placeholder="Nombre de mascota a eliminar">
+            <button onclick="eliminarMascota({ nombre: document.getElementById('del-nombre').value })">Eliminar por
+                Nombre (DELETE)</button>
+            <hr>
+            <input type="text" id="del-rut" placeholder="RUT de mascotas a eliminar">
+            <button onclick="eliminarMascota({ rut: document.getElementById('del-rut').value })">Eliminar por RUT
+                (DELETE)</button>
+        </div>
+
+        <div class="card">
+            <h3>Respuesta del Servidor</h3>
+            <pre id="resultado">Esperando acción...</pre>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api/mascotas';
+
+        function mostrarNotificacion(mensaje, tipo) {
+            const notificacion = document.getElementById('notificacion');
+            notificacion.className = tipo === 'error' ? 'error-msg' : 'success-msg';
+            notificacion.textContent = mensaje;
+            setTimeout(() => notificacion.textContent = '', 4000);
+        }
+
+        function renderizarResultado(data) {
+            document.getElementById('resultado').textContent = JSON.stringify(data, null, 2);
+        }
+
+        function manejarError(error) {
+            console.error('Detalle del error:', error);
+            if (error.response) {
+                mostrarNotificacion(error.response.data.error || 'Error en la petición', 'error');
+                renderizarResultado(error.response.data);
+            } else if (error.request) {
+                mostrarNotificacion('El servidor no respondió', 'error');
+                renderizarResultado({ error: 'No se pudo contactar al servidor' });
+            } else {
+                mostrarNotificacion('Error de configuración en Axios', 'error');
+                renderizarResultado({ error: error.message });
+            }
+        }
+
+        async function registrarMascota() {
+            const nombre = document.getElementById('post-nombre').value;
+            const rut = document.getElementById('post-rut').value;
+            try {
+                const response = await axios.post(API_URL, { nombre, rut });
+                mostrarNotificacion(response.data.mensaje, 'success');
+                renderizarResultado(response.data);
+                document.getElementById('post-nombre').value = '';
+                document.getElementById('post-rut').value = '';
+            } catch (error) {
+                manejarError(error);
+            }
+        }
+
+        async function obtenerMascotas(params = {}) {
+            try {
+                const response = await axios.get(API_URL, { params });
+                mostrarNotificacion('Consulta realizada con éxito', 'success');
+                renderizarResultado(response.data);
+            } catch (error) {
+                manejarError(error);
+            }
+        }
+
+        async function eliminarMascota(params = {}) {
+            try {
+                const response = await axios.delete(API_URL, { params });
+                mostrarNotificacion(response.data.mensaje, 'success');
+                renderizarResultado(response.data);
+            } catch (error) {
+                manejarError(error);
+            }
+        }
+    </script>
+</body>
+
+</html>
